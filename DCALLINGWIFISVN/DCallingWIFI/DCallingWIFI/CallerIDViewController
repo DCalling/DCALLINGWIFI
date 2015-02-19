@@ -1,0 +1,661 @@
+//
+//  CallerIDViewController.m
+//  FlatrateBoooster
+//
+//  Created by David C. Son on 13.01.12.
+//  Copyright (c) 2012 DALASON GmbH. All rights reserved.
+//
+
+#import "CallerIDViewController.h"
+#import "FlatrateXMLParser.h"
+#import "RestAPICaller.h"
+#import "PreferencesHandler.h"
+#import "VerificationCodeViewController.h"
+#import "CountryPrefixHandler.h"
+#import "AddressBookHandler.h"
+#import "GTCRagistration.h"
+#import "getCreditHandler.h"
+
+@implementation CallerIDViewController
+
+//Start Code Prastant.
+@synthesize callerIDField, fullNumber;
+@synthesize helloCallerID;
+@synthesize status, prefixCode, picker, textView, dropDown, prefixName, mcc, prefixCountryCode,newSimStatus;
+
+//end code Prashant
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    
+    [super didReceiveMemoryWarning];
+    
+    
+}
+
+
+-(NSString *) currentDatetime{
+    NSDate *now = [NSDate date];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat = @"hh:mm:ss:SSS";
+    [dateFormatter setTimeZone:[NSTimeZone systemTimeZone]];
+    
+    NSString *date = [dateFormatter stringFromDate:now];
+    [dateFormatter release];
+    return date;
+}
+
+
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad
+{
+    
+    helloCallerID.text = [[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"calleridTitleHeading"];
+    [helloCallerID setFont:[UIFont fontWithName:@"Arial-BoldMT" size:18]];
+    footer.text = [[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"Callerid_footer_name"];
+    UILabel *buttonLbl;
+     NSString * language = [[NSLocale preferredLanguages] objectAtIndex:0];
+    if([language isEqualToString:@"tr"]){
+        buttonLbl = [[UILabel alloc]initWithFrame:CGRectMake(3, 1, 125, 20)];
+        [buttonLbl setFont:[UIFont fontWithName:@"Arial-BoldMT" size:13]];
+    }
+    else {
+        buttonLbl = [[UILabel alloc]initWithFrame:CGRectMake(3, -1, 110, 20)];
+        [buttonLbl setFont:[UIFont fontWithName:@"Arial-BoldMT" size:14]];
+    }
+    
+    buttonLbl.text = [[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"Callerid_footer_name_link"] ;
+    [buttonLbl setBackgroundColor:[UIColor clearColor]];
+    [buttonLbl setTextColor:[UIColor blackColor]];
+    
+    [unsere addSubview:buttonLbl];
+    [unsere setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter| UIControlContentHorizontalAlignmentCenter];
+    [buttonLbl release];
+    
+    
+    
+    [footer setFont:[UIFont fontWithName:@"ArialMT" size:18]];
+    
+    textView.text = [[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"Callerid_textview"] ;
+    [textView setFont:[UIFont fontWithName:@"Arial-BoldMT" size:18]];
+    
+    UILabel *buttonVLbl = [[UILabel alloc]initWithFrame:CGRectMake(25, 3, 250, 30)];
+    buttonVLbl.text = [[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"callerId_Verification_button"] ;
+    [buttonVLbl setBackgroundColor:[UIColor clearColor]];
+    [buttonVLbl setTextColor:[UIColor whiteColor]];
+    [buttonVLbl setFont:[UIFont fontWithName:@"Arial-BoldMT" size:15]];
+    [VerificationButton addSubview:buttonVLbl];
+    [VerificationButton setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter| UIControlContentHorizontalAlignmentCenter];
+    [buttonVLbl release];
+    
+    
+    PreferencesHandler *preferences = [[PreferencesHandler alloc]init];
+    NSString *token = [preferences getToken];
+    
+    // Do any additional setup after loading the view from its nib.
+    // Setup the Network Info and create a CTCarrier object
+    CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
+    CTCarrier *carrier = [networkInfo subscriberCellularProvider];
+    
+    // Get carrier name
+    NSString *carrierName = [carrier carrierName];
+    if (carrierName != nil){
+        NSLog(@"Carrier: %@", carrierName);
+       
+    }    
+    // Get mobile country code
+    mcc = [carrier mobileCountryCode];
+    
+    // Get mobile network code
+    NSString *mnc = [carrier mobileNetworkCode];
+    if (mnc != nil){
+        NSLog(@"Mobile Network Code (MNC): %@", mnc);
+        
+    }
+    
+    
+    //NSLog(@"3  - %@", [self currentDatetime]);
+    
+    if((token != NULL) && (token != nil)){
+        NSLog(@"in if token != NULL: %@",token);
+        //[self performSelectorInBackground:@selector(updateCredit) withObject:nil];
+        //[self getCredit];
+        UITabBarController *tab = [self.storyboard instantiateViewControllerWithIdentifier:@"tabBarController"];
+        [self.navigationController pushViewController:tab animated:YES];
+        //[self performSegueWithIdentifier:@"toTabBar" sender:token];
+    }
+    
+    
+    //PreferencesHandler *preferences = [[PreferencesHandler alloc]init];
+    NSString *dropBoxText = [preferences getDropBox];
+    NSString *callerBoxText = [preferences getCallerBox];
+    [picker setHidden:YES];
+    //[dropDown resignFirstResponder];
+    int droLen = dropBoxText.length;
+    if(droLen ==0){
+        //dropDown.text = @"+49"; 
+    }
+    else{
+        dropDown.text = dropBoxText;
+        callerIDField.text = callerBoxText;
+    }
+    CountryPrefixHandler *countryHandler = [[CountryPrefixHandler alloc]init];
+    //NSString * language = [[NSLocale preferredLanguages] objectAtIndex:0];
+    if([language isEqualToString:@"de"]){
+        [countryHandler getCountryName];
+    }
+    else {
+        [countryHandler getCountryNameEN];
+    }
+    //[countryHandler getCountryName];
+    prefixCode = [countryHandler.countryPrefix retain];
+    
+    [countryHandler release];
+    //dropDown.delegate = self;
+    
+    [super viewDidLoad];
+    [callerIDField resignFirstResponder];
+    
+    self.navigationController.navigationBar.hidden = YES;
+   [callerIDField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+    newSimStatus=TRUE;
+   [self performSelectorInBackground:@selector(updateCreditCon) withObject:nil];
+}
+
+-(void)textFieldDidChange:(NSNotification*)aNotification {
+    //[self forBackgroundButton];
+    if(callerIDField.text.length==1){
+        if([callerIDField.text isEqualToString:@"0"]){
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"NOTIFY_CON"] message:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"NOT_ZERO"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            callerIDField.text=@"";
+            [alert show];
+            [alert release];
+        }
+            
+                
+    }
+}
+
+- (void) updateCredit {
+    /*NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    NSRunLoop* runLoop = [NSRunLoop currentRunLoop];
+    
+    updateTimer = [NSTimer scheduledTimerWithTimeInterval:10.0f target:self  selector:@selector(getCredit) userInfo:nil repeats:NO];
+    
+    [runLoop run];
+    [pool release];*/
+}
+
+-(void) getCredit
+{
+    getCreditHandler *mGetCrHandler = [[getCreditHandler alloc] init];
+    [mGetCrHandler getCredit];
+    
+    
+}
+-(BOOL)CheckNetwork   {
+    NSError *error = nil;
+    BOOL internetStatus = TRUE;
+    NSURL *scriptUrl = [NSURL URLWithString:@"http://www.apple.com"];
+    NSURLRequest* request = [NSURLRequest requestWithURL: scriptUrl 
+                                             cachePolicy: NSURLRequestReloadIgnoringCacheData 
+                                         timeoutInterval:5.0];
+    NSURLResponse* response;
+    NSData* myData = [NSURLConnection sendSynchronousRequest:request 
+                                           returningResponse:&response
+                                                       error:&error];
+    // NSData *data = [NSData dataWithContentsOfURL:scriptUrl];
+    //NSLog(@"ERROR %d", [error code]);
+    if ( myData != nil && [error code] == 0 )
+        internetStatus = TRUE;
+    else
+        internetStatus = FALSE;
+    return internetStatus;
+}
+
+-(NSString *) getMCCPrefix:(NSString *)mcPreCode{
+    CountryPrefixHandler *countryHandler = [[CountryPrefixHandler alloc]init];
+    NSString *code = @"";
+    NSMutableArray *getMCC = [countryHandler getMCCCode];
+     //NSLog(@"kkk %@", getMCC);
+    for(int i=0; i<[getMCC count]; i++){
+        NSMutableArray *mccCode = [getMCC objectAtIndex:i] ;
+        //NSLog(@"llll %@", mccCode);
+        for(NSString *str in mccCode){
+            if([str isEqualToString:mcPreCode]){
+                code = [countryHandler getPreMCCCode:i+1];
+                break;
+            }
+        }
+    }
+    
+    return code;
+}
+
+-(void) viewWillAppear:(BOOL)animated{
+    //dropDown.text=@"+49";
+    
+    PreferencesHandler *preferences = [[PreferencesHandler alloc]init];
+    NSString *token = [preferences getToken];
+    if((token != NULL) && (token != nil)){
+        NSLog(@"in if token != NULL: %@",token);
+        //[self performSelectorInBackground:@selector(updateCredit) withObject:nil];
+        //[self getCredit];
+        UITabBarController *tab = [self.storyboard instantiateViewControllerWithIdentifier:@"tabBarController"];
+        [self.navigationController pushViewController:tab animated:YES];
+        //[self performSegueWithIdentifier:@"toTabBar" sender:token];
+    }
+    
+    CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
+    CTCarrier *carrier = [networkInfo subscriberCellularProvider];
+    
+    // Get carrier name
+    NSString *carrierName = [carrier carrierName];
+    if (carrierName != nil){
+        NSLog(@"Carrier: %@", carrierName);
+        
+    }
+    
+    
+    // Get mobile country code
+    mcc = [carrier mobileCountryCode];
+    
+    prefixCountryCode = [self getMCCPrefix:mcc];
+    //select code from tfixCoutrnpreifxcode where mcc =  mcc  
+    if (prefixCountryCode.length != 0){
+        NSLog(@"Mobile Country Code (MCC): %@", prefixCountryCode);
+        NSString *preCode = @"+";
+        NSString *countryCode = [preCode stringByAppendingFormat:@"%@",prefixCountryCode];
+        dropDown.text = nil;
+       // if([countryCode isEqualToString:@"+49"]) {
+        BOOL matched = FALSE;
+        CountryPrefixHandler *countryHandler = [[CountryPrefixHandler alloc]init];
+        
+        matched = [countryHandler staticDialinNumbers:prefixCountryCode];
+        //if (matched == TRUE) {
+
+            dropDown.text = countryCode;
+            
+        /*} else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"ERROR_MSG"] message:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"SELECT_OTHER_COUNTRY"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+            [alert release];
+            //dropDown.text = countryCode;
+            dropDown.text = @"";
+            //[preferences setToken:nil];
+            
+        }*/
+        
+    }
+    
+    [super viewWillAppear:animated];
+}
+
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    
+}
+
+//Start Code Prashant
+
+- (IBAction)callerIDFieldReturn:(id)sender{
+    [sender resignFirstResponder];
+}
+- (IBAction)backgroundTouched:(id)sender {
+    [callerIDField resignFirstResponder];
+    [textView resignFirstResponder];
+    
+    [picker setHidden:YES];
+}
+
+- (IBAction)callerIdTouched:(id)sender{
+    [picker setHidden:YES];
+    dropDown.userInteractionEnabled = YES;
+}
+
+FlatrateXMLParser * flatrateXMLParser;
+
+-(void)doVerification:(id)sender{
+    //NSLog(@"prepareForSegue: %@", segue.identifier  ); 
+    [callerIDField resignFirstResponder];
+    
+    
+    NSString *firsTBox= dropDown.text;
+    NSString *secoBox = callerIDField.text;
+    int firstBox = firsTBox.length;
+    int secondBox = secoBox.length;
+    // NSLog(@"hell %d kjkk %d gh", firstBox, secondBox);
+    if((firstBox == 0 )|| (secondBox < 8)){
+        
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"msg11"]
+                                                          message:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"msg9"]
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+        return;
+        
+    }
+    else{
+        
+        AddressBookHandler *mAdd = [[AddressBookHandler alloc]init];
+        NSString *dropBox = [mAdd trimWhiteSpace:secoBox];
+        fullNumber = [firsTBox stringByAppendingString:dropBox ];
+        PreferencesHandler *preferences = [[PreferencesHandler alloc]init];
+        NSString *callerBox = firsTBox;
+        [preferences setCallerBox:dropBox];
+        [preferences setDropBox:callerBox];
+        [mAdd release];
+    }
+    // add callerid format check
+    
+    
+    // 1. verificationSMS send verification code by sms
+    RestAPICaller *rapi = [[RestAPICaller alloc]init];
+    NSData *restAPI = [rapi getVerificationSMSXML:fullNumber];
+    
+    flatrateXMLParser = [[FlatrateXMLParser alloc] initWithDCallingPostDelegate: self xmlData:restAPI];
+    [activityIndicator release];
+    [flatrateXMLParser release];
+}
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    //NSLog(@"prepareForSegue: %@", segue.identifier  ); 
+    // NSLog(@"sds %@", [segue identifier]);
+    if([[segue identifier] isEqualToString:@"MySegue"]){
+        
+    }
+    if([[segue identifier] isEqualToString:@"moveToGTC"]){
+        GTCRagistration *myPush = [segue destinationViewController];
+        myPush.buttonTitle=@"unsere";
+    }
+}
+
+-(void) dCallingParsePostDidComplete: (NSMutableString *) result{ // call by thread. in xmlParser class
+    //NSLog(result);
+    
+    NSRange textRange;
+    textRange = [result rangeOfString:@"success"];
+    //NSLog(@"xml %@", result);
+    if(textRange.location != NSNotFound){
+        status = true;
+    }
+    else{
+        status = false;
+    }
+    
+    if(!status){
+        //NSLog(@"error status false");
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"INTERNET_CONNECTION_WARNING"]
+                                                          message:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"INTERNET_CONNECTION_MSG"]
+                                                         delegate:nil
+                                                cancelButtonTitle:@"OK"
+                                                otherButtonTitles:nil];
+        
+        [message show];
+        return;
+    }else{
+        //NSLog(@"success true");
+        AddressBookHandler *mAdd = [[AddressBookHandler alloc]init];
+        NSString *dropBox = [mAdd trimWhiteSpace:callerIDField.text];
+        
+        [mAdd release];
+        NSString *myCallerid = [dropDown.text stringByAppendingString:dropBox];
+        PreferencesHandler *preferences = [[PreferencesHandler alloc]init];
+        [preferences setCallerID:myCallerid];
+        
+        [self performSegueWithIdentifier:@"MySegue" sender:self];
+    }
+    
+    
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+
+#pragma mark -
+#pragma mark PickerView DataSource
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+- (NSInteger)pickerView:(UIPickerView *)pickerView
+numberOfRowsInComponent:(NSInteger)component
+{
+    return [prefixCode count];
+}
+- (NSString *)pickerView:(UIPickerView *)pickerView
+             titleForRow:(NSInteger)row
+            forComponent:(NSInteger)component
+{
+    return [prefixCode objectAtIndex:row];
+} 
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    NSString *cName = [prefixCode objectAtIndex:row] ;
+    
+    CountryPrefixHandler *countryHandler = [[CountryPrefixHandler alloc]init];
+    
+    NSString *sym = @"+";
+    NSString * language = [[NSLocale preferredLanguages] objectAtIndex:0];
+    if([language isEqualToString:@"de"]){
+        prefixName =(NSString *) [countryHandler getCountryPrefix:cName];
+    }
+    else {
+        prefixName =(NSString *) [countryHandler getCountryPrefixEN:cName];
+    }
+    
+   
+    dropDown.text = @"";
+    NSString *values = [sym stringByAppendingString:prefixName];
+    //if([values isEqualToString:@"+49"]){
+        BOOL matched = FALSE;
+        matched = [countryHandler staticDialinNumbers:prefixName];
+    //if (matched == TRUE) {
+        dropDown.text = values;        
+        values = nil;
+    /*}
+        
+        
+   // }
+    else {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"ERROR_MSG"] message:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"SELECT_OTHER_COUNTRY"] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+        dropDown.text = @"";
+        //dropDown.text = values;
+    }*/
+    [picker setHidden:YES];
+    [callerIDField becomeFirstResponder];
+    [countryHandler release];
+}
+
+
+
+- (IBAction)touchesBegan {
+   // if([callerIDField resignFirstResponder] ==NO){
+        [callerIDField resignFirstResponder];
+        //NSLog(@"resign");
+   // }
+    
+    
+}
+
+-(IBAction) dropBoxHide{
+    [dropDown resignFirstResponder];
+    [callerIDField resignFirstResponder];
+}
+
+-(IBAction) openPicker{
+    
+    [picker setHidden:NO];
+    
+    //[self textFieldDidEndEditing:dropDown];
+    [self touchesBegan];
+    [self dropBoxHide];
+    [self.view addSubview:picker];
+    picker.delegate = self;
+    picker.showsSelectionIndicator = YES;
+    CountryPrefixHandler *countryHandler = [[CountryPrefixHandler alloc]init];
+    NSString * language = [[NSLocale preferredLanguages] objectAtIndex:0];
+    NSMutableArray *preCode =[[NSMutableArray alloc]init];
+    if([language isEqualToString:@"de"]){
+        preCode = [countryHandler getCountryPrefixCode];
+    }
+    else {
+        preCode = [countryHandler getCountryPrefixCodeEN];
+    }
+    
+    for(int i=0; i < [preCode count]; i++){
+        NSString *str = [@"+" stringByAppendingFormat:@"%@",[preCode objectAtIndex:i]];
+        if([dropDown.text length] !=0 && [dropDown.text isEqualToString:str]){
+            [picker selectRow:i inComponent:0 animated:NO];
+            break;
+            
+            
+        }
+    }
+    [preCode release];
+    [countryHandler release];
+}
+
+-(IBAction)pushToGTC:(id)sender{
+    
+    [self performSegueWithIdentifier:@"moveToGTC" sender:self];
+}
+
+-(void)checkPrefix{
+    
+    CTTelephonyNetworkInfo *networkInfo = [[CTTelephonyNetworkInfo alloc] init];
+    CTCarrier *carrier = [networkInfo subscriberCellularProvider];
+    PreferencesHandler *preferences = [[PreferencesHandler alloc]init];
+    NSString *carrierName = [carrier carrierName];
+    NSLog(@"CarrierNames: %@", carrierName); 
+    mcc = [carrier mobileCountryCode];
+    NSString *mnc1 = [carrier mobileNetworkCode];
+    prefixCountryCode = [self getMCCPrefix:mcc];
+   // NSString *preCode = @"+";
+    //NSString *countryCode = [preCode stringByAppendingFormat:@"%@",prefixCountryCode];
+    BOOL matched = FALSE;
+    CountryPrefixHandler *countryHandler = [[CountryPrefixHandler alloc]init];
+    //NSString *token = [preferences getToken];
+    matched = [countryHandler staticDialinNumbers:prefixCountryCode];
+    newSimStatus = TRUE;
+    
+        if (![carrierName isEqualToString:[preferences getCarrier]]){
+            NSLog(@"Carrier: %@ %@", carrierName, [preferences getCarrier]);
+            [preferences setToken:nil];
+            [preferences setMCC:nil];
+            [preferences setMNC:nil];
+            [preferences setCarrier:nil];
+            [preferences setMCC:mcc];
+            [preferences setMNC:mnc1];
+            [preferences setCarrier:carrierName];
+            //dropDown.text = countryCode;
+            [preferences setCallerBox:nil];            
+            newSimStatus = FALSE;
+            [self pushtoSelf];
+            
+        }
+        else if (![mnc1 isEqualToString:[preferences getMNC]]){
+            NSLog(@"MNC : %@ %@", mnc1, [preferences getMNC]);
+            [preferences setToken:nil];
+            [preferences setMCC:nil];
+            [preferences setMNC:nil];
+            [preferences setCarrier:nil];
+            [preferences setMCC:mcc];
+            [preferences setMNC:mnc1];
+            [preferences setCarrier:carrierName];
+            //dropDown.text = countryCode;
+            [preferences setCallerBox:nil];
+            
+            newSimStatus = FALSE;
+           [self pushtoSelf];
+            
+        }
+        else if (![mcc isEqualToString:[preferences getMCC]]){
+            NSLog(@"MCC : %@ %@", mcc, [preferences getMCC]);
+            [preferences setToken:nil];
+            [preferences setMCC:nil];
+            [preferences setMNC:nil];
+            [preferences setCarrier:nil];
+            [preferences setMCC:mcc];
+            [preferences setMNC:mnc1];
+            [preferences setCarrier:carrierName];
+            //dropDown.text = countryCode;
+            [preferences setCallerBox:nil];
+           
+            newSimStatus = FALSE;
+            [self pushtoSelf];
+            
+        }
+        else{
+            newSimStatus = TRUE;
+            NSLog(@"Using Same Number");
+           // NSLog(@"SELF %@", self.title);
+        }
+   
+}
+
+-(void)pushtoSelf{
+    dispatch_sync(dispatch_get_main_queue(), ^{UIAlertView *alert = [[UIAlertView alloc] initWithTitle:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"NEW_SIM_WARN"]                                                            message:[[[NSBundle mainBundle] localizedInfoDictionary] objectForKey:@"NEW_SIM_MSG"]
+                                                                                              delegate:self  cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alert show];
+        [alert release];});
+    
+    newSimStatus=TRUE;
+   // NSLog(@"Self : %@", self.title);
+    //if([self.title isEqualToString:@"callerid"]){
+        [self viewWillAppear:YES];
+   // }
+    /*else if([self.title isEqualToString:@"VerificationId"]){
+        [self performSegueWithIdentifier:@"backAgain" sender:self];
+    }
+    else{
+        UITabBarController *tab = [self.storyboard instantiateViewControllerWithIdentifier:@"callerid"];
+        [self.navigationController pushViewController:tab animated:YES];
+    }*/
+    
+    //[self performSegueWithIdentifier:@"pushToCallerID" sender:self];
+}
+
+- (void) updateCreditCon {
+    pool = [[NSAutoreleasePool alloc] init];
+    runLoop = [NSRunLoop currentRunLoop];
+    
+    updateTimer = [NSTimer scheduledTimerWithTimeInterval:20.0f target:self  selector:@selector(checkPrefix) userInfo:nil repeats:YES];
+    
+    [runLoop run];
+    [pool release];
+}
+
+-(void) dealloc{
+    [prefixName release];
+    [prefixCode release];
+    [prefixCountryCode release];    
+    [super dealloc];
+}
+
+
+@end

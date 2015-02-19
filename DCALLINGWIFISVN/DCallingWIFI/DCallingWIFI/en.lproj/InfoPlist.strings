@@ -1,0 +1,237 @@
+/* Localized versions of Info.plist keys */
+"calleridTitleHeading" = "Please enter your phone number";
+
+
+"callerId_Verification_button" = "Request a verification code";
+
+"Callerid_textview" = "Please enter here your phone number. You will receive a verification code via SMS that allows you to log in";
+
+
+"Callerid_footer_name" = "With your registration you confirm";
+
+"Callerid_footer_name_link" = " our GTC" ;
+
+"verification_title_heading" = "Enter a verification code";
+
+"verification_check_title"= "Code is being sent to:";
+
+"verification_bottom_button"= "Check number + request again";
+
+"verification_top_button"= "Register";
+
+"recent_title"= "Call report";
+
+"recent_tab"= "Recent";
+
+"recent_recharge_title"= "Credit balance";
+
+"contact_address_comp_name"= "DALASON GmbH      ";
+
+"contact_address1"= "Bonner Str. 484-486";
+
+"contact_address2"= "50968 Cologne     ";
+
+"contact_country"= "Germany          ";
+
+"contact_tel"= "Phone";
+
+"contact_fax"= "Fax";
+
+"contact_email"= "E-Mail";
+
+"more_screen_support_number_title"= "Support Hotline";
+
+"more_screen_recharge"= "Recharge";
+
+"more_screen_price_list"= "Price list";
+
+"more_screen_callreport"= " Call report";
+
+"more_screen_facebook"= "Facebook";
+
+"more_screen_FAQ"= "FAQ";
+
+"more_screen_help"= "Help";
+
+"more_screen_details"= "Detail";
+
+"GTC_top_left_button"= "Interrupt";
+
+"GTC_top_right_button"= "Approve";
+
+"contact_top_left_button"= "All";
+
+"contact_top_right_button"= "Abroad";
+
+"keypad_call_button"= "Call";
+
+"keypad_Re_call_button"= "Re-Dial";
+
+"Favorite"= "Favorites";
+
+"Favorite_add_button" = "Add to favorites";
+
+"Contact_add_button" = "Add to Contact";
+
+"contact_title"= "Contacts";
+
+"keypad_title"= "Dial";
+
+"more_title"= "More";
+
+"more_section_title_One" = "Credit balance";
+
+"more_section_title_Two" = "Invite friends";
+
+"more_section_title_Three" = "About";
+
+"more_section_title_Four" = "Settings";
+
+"Cancel" = "Cancel";
+
+"more_contact_title" = "Contact";
+
+"AGB_back_title"= "Back";
+
+//new text
+
+"msg1" = "Contact is already in your Favorites" ;  
+
+"msg2"= "Do you know the DCalling WIFI app?";
+
+"msg3" = "Hi! Do you know the DCalling WIFI app? NO ROAMING calling home and international destinations. http://www.dcalling.de/dlwifi";
+
+"alert" = "Failure";
+
+"msg5"= "Your device doesn't support the composer sheet";
+
+"msg6" = "Cancelled";
+
+"body1" = "Mail cancelled: you cancelled the operation and no email message was queued";
+
+"body2" = "Mail saved: you saved the email message in the drafts folder.";
+
+"body3" = "Mail send: the email message is queued in the outbox. It is ready to send.";
+
+"bod4" = "Mail failed: the email message was not saved or queued, possibly due to an error.";
+
+"msg7" = "Mail not sent.";
+
+"msg8" = "Could not create: unknown user";
+
+"msg9" = "Please check your mobile number and try again.";
+
+"msg10" = "Failed to send SMS!";
+
+"msg11" = "Notification!";
+
+"msg12" = "Please fill your mobile number and try again.";
+
+"msg13" = "Your transaction has successfully completed";
+
+"FAQ_fileName" = "help";
+
+"INTERNET_CONNECTION_WARNING" = "No internet connection";
+
+"INTERNET_CONNECTION_MSG" = "Please activate your internet connection!";
+
+"SELECT_OTHER_COUNTRY" = "Sorry, this country is not supported, yet";
+
+"ERROR_MSG" = "Error Message!!!";
+
+"ROAMING_WARN" = "ROAMING WARNING:";
+
+"ROAMING_MSG" = "Your phone is in a roaming network. Therefore DCalling will not be used and all numbers will be dialled directly.";
+
+"NEW_SIM_WARN" = "New SIM-card";
+
+"NEW_SIM_MSG" = "You have inserted a new SIM-card. Please verify your new SIM-card!";
+
+"NOTIFY_CON" = "Notification!!!";
+
+"NOTIFY_MSG" = "There is no internet connection. DCalling will send a SMS to a German mobile number to initiate a callback. This SMS is charged according to your SIM provider's tariff plan. Please confirm sending the SMS?";
+
+"NOT_ZERO" = "Please check your number. Your number is starting with a leading zero (0)" ;
+
+
+"SMS_Verify"="Could not connect to server. Please try after sometimes!!!";
+
+"SHORT_DIALIN_NOTE" = "DCalling will be using a local number to connect to";
+
+"SHORT_DIALIN_NOTES" = "using a local number";
+
+"SHORT_DIALIN_NOTES_OK" = "OK";
+
+"SHORT_DIALIN_NOTES_CANCEL" = "Do not show this again.";
+
+"SHORT_DIALIN_NOTE_TITLE"= "Information";
+
+"NO_INTERNET_NOCACHE" = "No internet connection! Provider of number cannot be determined. Do you want to dial this number using DCalling?";
+
+"NO_INTERNET_NO_CACHE" = "No internet connection! Provider of number cannot be determined. Do you want to dial this number using your mobile provider rates?";
+
+"NO_INTERNET_INTERNATIONAL" = "No internet connection! Do you want to dial this number using DCalling?";
+
+"CALLBACK_CALLING" = "DCalling will call you and establish the connection to";
+
+"CALLBACK_CALLING_TITLE" = "You are in roaming";
+
+"SMS_CALLING_TITLE" = "Callback";
+
+"SMS_CALLING" = "There is no internet connection. Do you want to initiate the callback by SMS?";
+
+"CREDIT_NOT_SUFFICIENT_TITLE" = "Insufficient Credit";
+
+"CREDIT_NOT_SUFFICIENT" = "Please recharge your account on our Website.";
+
+"INTERNET_YES" = "YES";
+"INTERNET_NO" = "NO";
+
+"HOTLINE_TEXT_POPUP" = "Do you want to call our support hotline through DCalling wifi or your standard phone connection?";
+"HOTLINE_BUTTON_WIFI" = "Internet";
+"HOTLINE_BUTTON_GSM" = "GSM";
+"HOTLINE_POPUP_TITLE"= "Information";
+"HOTLINE_BUTTON_CANCEL" =  "Cancel";
+
+
+"mobile"= "mobile";
+"iPhone"= "iPhone";
+"home"= "home";
+"work"= "work";
+"main"= "main";
+"home fax"= "home fax";
+"work fax"= "work fax";
+"other fax"= "other fax";
+"pager"= "pager";
+"other"= "other";
+"work fax" = "work fax";
+"home fax" = "home fax";
+"çağrı cihazı" = "pager";
+
+"Mobil"= "mobile";
+"iPhone"= "iPhone";
+"Privat"= "home";
+"Arbeit"= "work";
+"Zentrale"= "main";
+"Fax, Privat"= "home fax";
+"Fax, Arbeit"= "work fax";
+"Anderes Fax"= "other fax";
+"pager"= "pager";
+"Andere"= "other";
+"Fax (Privat)" = "work fax";
+"Fax (Arbeit)" = "home fax";
+
+"cep"= "mobile";
+"iPhone"= "iPhone";
+"ev"= "home";
+"iş"= "work";
+"birincil"= "main";
+"ev faksi"= "home fax";
+"iş faksi"= "work fax";
+"diğer faks"= "other fax";
+"çağri cihazi"= "pager";
+"diğer"= "other";
+"ev faksı" = "home fax";
+"iş faksı" = "work fax";
+
+"IC_MSG" = "Incoming call from %@";

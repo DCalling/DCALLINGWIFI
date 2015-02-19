@@ -1,0 +1,239 @@
+/* Localized versions of Info.plist keys */
+"calleridTitleHeading" = "Lütfen Cep Telefonu Numaranızı girin";
+
+
+"callerId_Verification_button" = "Tanım Kodunu iste";
+
+"Callerid_textview" = "Lütfen Cep Telefonu Numaranızı buraya girin. Cep Telefonnumaranızı buraya girdikten sonra size Tanım Kodu SMS ile yolanacaktır, bu Kod ile Kayıt olabilirsiniz.";
+
+
+"Callerid_footer_name" = "Lütfen Kayıt işlemini onaylayın";
+
+"Callerid_footer_name_link" = "Şartlar ve Koşullar" ;
+
+"verification_title_heading" = "Tanım Kodunu gir";
+
+"verification_check_title"= "Tanım Kodunuz bu adrese yolanacaktır:";
+
+"verification_bottom_button"= "Numarayı denetle + yeni bir Kod iste";
+
+"verification_top_button"= "Kayıt ol";
+
+"recent_title"= "Geçmiş";
+
+"recent_tab"= "Geçmiş";
+
+"recent_recharge_title"= "  Kontör    ";
+
+"contact_address_comp_name"= "DALASON GmbH     ";
+
+"contact_address1"= "Bonner Str. 484-486";
+
+"contact_address2"= "50968 Köln       ";
+
+"contact_country"= "Deutschland      ";
+
+"contact_tel"= "Telefon";
+
+"contact_fax"= "Fax";
+
+"contact_email"= "E-Posta";
+
+"more_screen_support_number_title"= "Müşteri Hattı";
+
+"more_screen_recharge"= "Kontör doldur";
+
+"more_screen_price_list"= "Fiyatlistesi";
+
+"more_screen_callreport"= "  Geçmiş";
+
+"more_screen_facebook"= "Facebook";
+
+"more_screen_FAQ"= "SSS";
+
+"more_screen_help"= "Yardım";
+
+"more_screen_details"= "Ayrıntılar";
+
+"GTC_top_left_button"= "İptal";
+
+"GTC_top_right_button"= "Onayla";
+
+"contact_top_left_button"= "Tümü";
+
+"contact_top_right_button"= "Yurtdışı";
+
+"keypad_call_button"= "    Ara";
+
+"keypad_Re_call_button"= "  Re-Ara";
+
+"Favorite"= "Favoriler";
+
+"Favorite_add_button" = "     Favori ekle";
+
+"Contact_add_button" = "Kişi ekle";
+
+"contact_title"= "Kişiler";
+
+"keypad_title"= "Ara";
+
+"more_title"= "Daha fazla";
+
+"more_section_title_One" = "Kontör";
+
+"more_section_title_Two" = "Arkadaşlarını davet et";
+
+"more_section_title_Three" = "Hakkımızda";
+
+"more_section_title_Four" = "Ayarlar";
+
+"Cancel" = "İptal";
+
+"more_contact_title" = "İletişim";
+
+"AGB_back_title"= "Geri";
+
+//new text
+
+"msg1" = "Bu Kişi Favorilere önceden eklenmiş";
+
+"msg2"= "Do you know the DCalling WIFI app?";
+
+"msg3" = "Hi! Do you know the DCalling WIFI app? NO ROAMING calling home and international destinations. http://www.dcalling.de/dlwifi";
+
+"alert" = "Başarısız";
+
+"msg5"= "Kullandınız Cihaz Yazma-Penceresini desteklemiyor";
+
+"msg6" = "İptal edildi";
+
+"body1" = "E-Posta iptal edildi: Gönderme süreçini iptal ediniz";
+
+"body2" = "E-Posta Taslağı Kaydet: E-Postayı Taslak olarak kaydetiniz.";
+
+"body3" = "E-Posta gönder: E-Posta gönderilmeye hazır";
+
+"bod4" = "E-Posta gönderilemedi: E Posta Taslak kutusuna kayıt edilemedi.";
+
+"msg7" = "E-Posta yollanmadı.";
+
+"msg8" = "Hesap oluşturulamadı: yabancı kullanıcı";
+
+"msg9" = "Lütfen Numaranızı kontroll edin ve tekrar deneyin.";
+
+"msg10" = "SMS yolarken hatta oluştu !";
+
+"msg11" = "Bildiri!";
+
+"msg12" = "Lütfen Numaranızı tekrar girin ve tekrar deneyin.";
+
+"msg13" = "Hesabınıza başarıyla Kontör dolduruldu ";
+
+"FAQ_fileName" = "help";
+
+"INTERNET_CONNECTION_WARNING" = "Internet Bağlantısı yok";
+
+"INTERNET_CONNECTION_MSG" = "Lütfen Internet Bağlantınızı kontroll edin!";
+
+"SELECT_OTHER_COUNTRY" = "Bu Ülkede DCalling kullanılamıyor.";
+
+"ERROR_MSG" = "Hatta oluştu!!!";
+
+"ROAMING_WARN" = "Dikkat ROAMING:";
+
+"ROAMING_MSG" = "Telefonunuz şuanda bir Roaming Bölgesinde. Tüm Konuşmallar kendi Telefonağınız üzeri gerçekleşiyor!";
+
+"NEW_SIM_WARN" = "Yeni bir SİM-Kartı";
+
+"NEW_SIM_MSG" = "Telefonunuza yeni bir SIM Kartı takdınız. Yeni Numaranızı onaylamak için lütfen Tamam tuşuna tıklayınız yada deaktive için İptal tuşuna.!";
+
+"NOTIFY_CON" = "Dikkat!!!";
+
+"NOTIFY_MSG" = "İnternet Bağlantısı mevcut deyil. DCalling bağlantı kurmak için Alman bir Mobilnumaraya mesaj yollayacak.Bu mesaj kullandınız Mobiltarife üzeri ücretlendirilir. Şimdi Mesajı yola?";
+
+"NOT_ZERO" = "Please check your number. The number does not start with zero (0)" ;
+
+"SMS_Verify"="İnternet üzeri Bağlantı kurulamadı. Lütfen tekrar deneyin!!!";
+
+"SHORT_DIALIN_NOTE"= "DCalling bir Sabit Hatt üzeri bağlanıyor";
+
+"SHORT_DIALIN_NOTES" = " bir Sabit Hatt numarası üzeri kurucak:";
+
+"SHORT_DIALIN_NOTES_OK" = "Tamam";
+
+"SHORT_DIALIN_NOTES_CANCEL" = "Bir daha bunu sorma";
+
+"SHORT_DIALIN_NOTE_TITLE"= "Bilgi";
+
+"NO_INTERNET_NOCACHE" = "Internet bağlantınız yok. Ondan dolayı DCalling aramak istedğiniz numaranın şebekesini bulamıyor. Bu Numarayı DCalling üzerinden aramak istermisiniz?";
+
+"NO_INTERNET_NO_CACHE" = "Internet bağlantınız yok. Ondan dolayı DCalling aramak istedğiniz numaranın şebekesini bulamıyor. Bu Numarayı kendi Telefon şebekenizden aramak istermisiniz?";
+
+"NO_INTERNET_INTERNATIONAL" = "No internet connection! Do you want to dial this number using DCalling?";
+
+"CALLBACK_CALLING" = "DCalling sizi arıyıp bağlantıyı oluşturacak";
+
+"CALLBACK_CALLING_TITLE" = "Roaming Bölgesi";
+
+"SMS_CALLING_TITLE" = "Callback";
+
+"SMS_CALLING" = "Internet Bağlantınız yok. Callback çağrısını mesaj ile iste";
+
+"CREDIT_NOT_SUFFICIENT_TITLE" = "Yetersiz Kontür";
+
+"CREDIT_NOT_SUFFICIENT" = "Lütfen Web sitemizden hesabınıza Kontör ekleyin.";
+
+"INTERNET_YES" = "Evet";
+"INTERNET_NO" = "Hayır";
+
+"HOTLINE_TEXT_POPUP" = "Do you want to call our support hotline through DCalling wifi or your standard phone connection?";
+"HOTLINE_BUTTON_WIFI" = "Internet";
+"HOTLINE_BUTTON_GSM" = "GSM";
+"HOTLINE_POPUP_TITLE"= "Information";
+"HOTLINE_BUTTON_CANCEL" =  "Cancel";
+
+"mobile"= "cep";
+"iPhone"= "iPhone";
+"home"= "ev";
+"work"= "iş";
+"main"= "birincil";
+"home fax"= "ev faksi";
+"work fax"= "iş faksi";
+"other fax"= "diğer faks";
+"pager"= "çağri cihazi";
+"other"= "diğer";
+"work fax" = "iş faksı";
+"home fax" = "ev faksı";
+
+"Mobil"= "cep";
+"iPhone"= "iPhone";
+"Privat"= "ev";
+"Arbeit"= "iş";
+"Zentrale"= "birincil";
+"Fax, Privat"= "ev faksi";
+"Fax, Arbeit"= "iş faksi";
+"Anderes Fax"= "diğer faks";
+"pager"= "çağri cihazi";
+"Andere"= "diğer";
+"Fax (Privat)" = "ev faksı";
+"Fax (Arbeit)" = "iş faksı";
+
+
+"cep"= "cep";
+"iPhone"= "iPhone";
+"ev"= "ev";
+"iş"= "iş";
+"birincil"= "birincil";
+"ev faksi"= "ev faksi";
+"iş faksi"= "iş faksi";
+"diğer faks"= "diğer faks";
+"çağri cihazi"= "çağri cihazi";
+"diğer"= "diğer";
+"ev faksı" = "ev faksı";
+"iş faksı" = "iş faksı";
+"çağrı cihazı" = "çağrı cihazı";
+
+
+
+
+

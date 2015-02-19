@@ -1,0 +1,13 @@
+/* Localized versions of Info.plist keys */
+
+"Callerid_Title_Heading" = "Bitte Handynummer eingeben";
+
+
+"callerId_Verification_button " = "Verifizierungs-Code anfordern";
+
+"Callerid_textview" = "Bitte geben Sie hier ihre Handy-Number ein.Sieerhalten dann einen Verifzierungs-Code per SMS mit dem Sie sich anmelden konnen.";
+
+
+"Callerid_footer_name" = "Mit ihre Anmelden bestatigen Sie";
+
+"Callerid_footer_name_link" = "unsere AGBs" ;
