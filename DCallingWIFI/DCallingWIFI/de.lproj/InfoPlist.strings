@@ -1,0 +1,235 @@
+/* Localized versions of Info.plist keys */
+"calleridTitleHeading" = "Bitte Handynummer eingeben";
+
+
+"callerId_Verification_button" = "Verifizierungscode anfordern";
+
+"Callerid_textview" = "Bitte geben Sie hier Ihre Handynummer ein. Sie erhalten dann einen Verifizierungscode per SMS mit dem Sie sich anmelden können.";
+
+
+"Callerid_footer_name" = "Mit Ihrer Anmeldung bestätigen Sie";
+
+"Callerid_footer_name_link" = " unsere AGBs" ;
+
+"verification_title_heading" = "Verifizierungscode eingeben";
+
+"verification_check_title"= "Code wird versendet an:";
+
+"verification_bottom_button"= "Nummer prüfen + neu anfordern";
+
+"verification_top_button"= "Anmelden";
+
+"recent_title"= "Verlauf";
+
+"recent_tab"= "Verlauf";
+
+"recent_recharge_title"= "  Guthaben    ";
+
+"contact_address_comp_name"= "DALASON GmbH     ";
+
+"contact_address1"= "Bonner Str. 484-486";
+
+"contact_address2"= "50968 Köln       ";
+
+"contact_country"= "Deutschland      ";
+
+"contact_tel"= "Telefon";
+
+"contact_fax"= "Fax";
+
+"contact_email"= "E-Mail";
+
+"more_screen_support_number_title"= "Support Hotline";
+
+"more_screen_recharge"= "Konto aufladen";
+
+"more_screen_price_list"= "Preisliste";
+
+"more_screen_callreport"= "  Verlauf";
+
+"more_screen_facebook"= "Facebook";
+
+"more_screen_FAQ"= "FAQ";
+
+"more_screen_help"= "Hilfe";
+
+"more_screen_details"= "Detail";
+
+"GTC_top_left_button"= "Abbrechen";
+
+"GTC_top_right_button"= "Zustimmen";
+
+"contact_top_left_button"= "Alle";
+
+"contact_top_right_button"= "Ausland";
+
+"keypad_call_button"= "    Anrufen";
+
+"keypad_Re_call_button"= "     Re-Anrufen";
+
+"Favorite"= "Favoriten";
+
+"Favorite_add_button" = "Favoriten hinzufügen";
+
+"Contact_add_button" = "Kontakte hinzufügen";
+
+"contact_title"= "Kontakte";
+
+"keypad_title"= "Wählen";
+
+"more_title"= "Mehr";
+
+"more_section_title_One" = "Guthaben";
+
+"more_section_title_Two" = "Freunde einladen";
+
+"more_section_title_Three" = "Über uns";
+
+"more_section_title_Four" = "Einstellungen";
+
+"Cancel" = "Abbrechen";
+
+"more_contact_title" = "Kontakt";
+
+"AGB_back_title"= "Zurück";
+
+//new text
+
+"msg1" = "Kontakt gehört bereits zu Ihren Favoriten";
+
+"msg2"= "Kennst Du die DCalling WIFI App?";
+
+"msg3" = "Hi, Kennst Du die DCalling WIFI App? OHNE ROAMING von überall zu Hause und weltweit anrufen! http://www.dcalling.de/dlwifi";
+
+"alert" = "Scheitern";
+
+"msg5"= "Ihr Gerät unterstützt kein Verfassen-Fenster";
+
+"msg6" = "Abgebrochen";
+
+"body1" = "E-Mail Versand abgebrochen: Sie haben den Vorgang abgebrochen und keine E-Mail-Nachricht war in der Warteschlange";
+
+"body2" = "E-Mail gespeichert:Sie haben die E-Mail-Nachricht im Ordner Entwürfe gespeichert .";
+
+"body3" = "E-Mail senden: Die E-Mail-Nachricht steht in der ausgehenden Post an und ist bereit zum senden.";
+
+"bod4" = "E-Mail Versand fehlgeschlagen: Die E-Mail-Nachricht wurde nicht gespeichert und befindet sich nicht in der Warteschlange, möglicherweise aufgrund eines Fehlers.";
+
+"msg7" = "E-Mail nicht gesendet.";
+
+"msg8" = "Konnte nicht erstellt werden: unbekannter Benutzer";
+
+"msg9" = "Bitte überprüfen Sie Ihre Handynummer und versuchen Sie es noch einmal.";
+
+"msg10" = "Fehler beim SMS Versand!";
+
+"msg11" = "Mitteilung!";
+
+"msg12" = "Bitte geben Sie Ihre Handynummer ein und versuchen Sie es erneut.";
+
+"msg13" = "Ihre Transaktion ist erfolgreich abgeschlossen ";
+
+"FAQ_fileName" = "help_de";
+
+"INTERNET_CONNECTION_WARNING" = "Kein Internet";
+
+"INTERNET_CONNECTION_MSG" = "Bitte überprüfen Sie Ihre Internetverbindung!";
+
+"SELECT_OTHER_COUNTRY" = "Dieses Land wird leider noch nicht unterstützt.";
+
+"ERROR_MSG" = "Fehlermeldung!!!";
+
+"ROAMING_WARN" = "ACHTUNG ROAMING:";
+
+"ROAMING_MSG" = "Ihr Telefon ist in einem Roaming-Netz. Daher werden alle Gespräche ohne DCalling geführt und direkt gewählt!";
+
+"NEW_SIM_WARN" = "Neue Simkarte";
+
+"NEW_SIM_MSG" = "Sie haben eine neue Simkarte eingelegt. Bitte verifizieren Sie die neue Simkarte!";
+
+"NOTIFY_CON" = "Nachricht!!!";
+
+"NOTIFY_MSG" = "Kein Internetverbindung verfügbar. DCalling schickt eine SMS an eine deutsche Mobilfunknummer, um einen Rückruf auszulösen. Diese SMS wird nach dem gültigen Tarif Ihres Anbieters abgerechnet. SMS jetzt senden?";
+
+"NOT_ZERO" = "Please check your number. Your number is starting with a leading zero (0)" ;
+
+"SMS_Verify"="Konnte keine Verbindung zum Server herstellen. Bitte versuchen Sie es nach manchmal!!!";
+
+"SHORT_DIALIN_NOTE"= "DCalling verbindet Sie nun über eine lokale Festnetznummer zu";
+
+"SHORT_DIALIN_NOTES" = "über eine lokale Festnetznummer verbinden.";
+
+"SHORT_DIALIN_NOTES_OK" = "OK";
+
+"SHORT_DIALIN_NOTES_CANCEL" = "Dies nicht mehr anzeigen.";
+
+"SHORT_DIALIN_NOTE_TITLE"= "Information";
+
+"NO_INTERNET_NOCACHE" = "Sie haben keine Internetverbindung. Daher kann der DCalling den Anbieter der Rufnummer nicht ermitteln. Wollen Sie diese Rufnummer über den DCalling wählen?";
+
+"NO_INTERNET_NO_CACHE" = "Sie haben keine Internetverbindung. Daher kann der DCalling den Anbieter der Rufnummer nicht ermitteln. Wollen Sie diese Rufnummer über Ihren Provider wählen?";
+
+"NO_INTERNET_INTERNATIONAL" = "Keine Internetverbindung! Wollen Sie diese Rufnummer über DCalling wählen?";
+
+"CALLBACK_CALLING" = "DCalling wird Sie anrufen und eine Verbindung herstellen zu";
+
+"CALLBACK_CALLING_TITLE" = "Roaming";
+
+"SMS_CALLING_TITLE" = "Callback";
+
+"SMS_CALLING" = "Kein Internet. Wollen Sie den Callback per SMS anfordern?";
+
+"CREDIT_NOT_SUFFICIENT_TITLE" = "Zu wenig Guthaben";
+
+"CREDIT_NOT_SUFFICIENT" = "Bitte laden Sie Ihr Konto auf unserer Website auf.";
+
+"INTERNET_YES" = "JA";
+"INTERNET_NO" = "NEIN";
+
+"HOTLINE_TEXT_POPUP" = "Wollen Sie den DCalling Support über DCalling Wifi oder ihre normale Telefonverbindung anrufen?";
+"HOTLINE_BUTTON_WIFI" = "Internet";
+"HOTLINE_BUTTON_GSM" = "GSM";
+"HOTLINE_POPUP_TITLE"= "Information";
+"HOTLINE_BUTTON_CANCEL" =  "Abbrechen";
+
+"mobile"= "Mobil";
+"iPhone"= "iPhone";
+"home"= "Privat";
+"work"= "Arbeit";
+"main"= "Zentrale";
+"home fax"= "Fax, Privat";
+"work fax"= "Fax, Arbeit";
+"other fax"= "Anderes Fax";
+"pager"= "pager";
+"other"= "Andere";
+"work fax" = "Fax (Privat)";
+"home fax" = "Fax (Arbeit)";
+
+"Mobil"= "Mobil";
+"iPhone"= "iPhone";
+"Privat"= "Privat";
+"Arbeit"= "Arbeit";
+"Zentrale"= "Zentrale";
+"Fax, Privat"= "Fax, Privat";
+"Fax, Arbeit"= "Fax, Arbeit";
+"Anderes Fax"= "Anderes Fax";
+"pager"= "pager";
+"Andere"= "Andere";
+"Fax (Privat)" = "Fax (Privat)";
+"Fax (Arbeit)" = "Fax (Arbeit)";
+"çağrı cihazı" = "pager";
+
+"cep"= "Mobil";
+"iPhone"= "iPhone";
+"ev"= "Privat";
+"iş"= "Arbeit";
+"birincil"= "Zentrale";
+"ev faksi"= "Fax, Privat";
+"iş faksi"= "Fax, Arbeit";
+"diğer faks"= "Anderes Fax";
+"çağri cihazi"= "pager";
+"diğer"= "Andere";
+"iş faksı" = "Fax (Privat)";
+"ev faksı" = "Fax (Arbeit)";
+
+

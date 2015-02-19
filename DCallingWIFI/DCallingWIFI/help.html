@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml2/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <script type="text/javascript" src="file:///android_asset/script.js"></script>
+        <link rel="stylesheet" href="file:///android_asset/styles.css" type="text/css"/>
+        <style>
+            * {margin:0; padding:0; font: normal 14px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica, sans-serif;color:white;}
+            #acc {list-style:none; color:#033; margin:0 auto 40px;}
+            #acc h3 {padding:6px 6px 8px; font: Bold 16px "Lucida Grande", "Trebuchet MS", Verdana, Helvetica, sans-serif; margin-top:5px; cursor:pointer;}
+            h3.selected {background: gray;}
+            #acc .acc-section {overflow:hidden;padding:0 5px;}
+            #acc .acc-content {padding:10px;}
+            #acc  > li {border-bottom: 1px solid gray;}
+            .acc-content>ol>li { margin-left: 25px; padding-left: 10px;}
+            </style>
+        <script>
+            var TINY={};
+            
+            function T$(i){return document.getElementById(i)}
+            function T$$(e,p){return p.getElementsByTagName(e)}
+            
+            TINY.accordion=function(){
+                function slider(n){this.n=n; this.a=[]}
+                slider.prototype.init=function(t,e,m,o,k){
+                    var a=T$(t), i=s=0, n=a.childNodes, l=n.length; this.s=k||0; this.m=m||0;
+                    for(i;i<l;i++){
+                        var v=n[i];
+                        if(v.nodeType!=3){
+                            this.a[s]={}; this.a[s].h=h=T$$(e,v)[0]; this.a[s].c=c=T$$('div',v)[0]; h.onclick=new Function(this.n+'.pr(0,'+s+')');
+                            if(o==s){h.className=this.s; c.style.height='auto'; c.d=1}else{c.style.height=0; c.d=-1} s++
+                        }
+                    }
+                    this.l=s
+                };
+                slider.prototype.pr=function(f,d){
+                    for(var i=0;i<this.l;i++){
+                        var h=this.a[i].h, c=this.a[i].c, k=c.style.height; k=k=='auto'?1:parseInt(k); clearInterval(c.t);
+                        if((k!=1&&c.d==-1)&&(f==1||i==d)){
+                            c.style.height=''; c.m=c.offsetHeight; c.style.height=k+'px'; c.d=1; h.className=this.s; su(c,1)
+                        }else if(k>0&&(f==-1||this.m||i==d)){
+                            c.d=-1; h.className=''; su(c,-1)
+                        }
+                    }
+                };
+                function su(c){c.t=setInterval(function(){sl(c)},20)};
+                function sl(c){
+                    var h=c.offsetHeight, d=c.d==1?c.m-h:h; c.style.height=h+(Math.ceil(d/5)*c.d)+'px';
+                    c.style.opacity=h/c.m; c.style.filter='alpha(opacity='+h*100/c.m+')';
+                    if((c.d==1&&h>=c.m)||(c.d!=1&&h==1)){if(c.d==1){c.style.height='auto'} clearInterval(c.t)}
+                };
+                return{slider:slider}
+            }();
+            </script>
+        
+    </head>
+    <body bgcolor="black">
+        <ul class="acc" id="acc">
+            <li>
+                <h3>1. Why do I need DCalling WIFI?</h3>
+                <div class="acc-section">
+                    <div class="acc-content">
+                        DCalling WIFI is for everyone who wants to AVOID ROAMING when being abroad and making low priced calls home and worldwide.
+                        
+                    </div>
+                </div>
+            </li>
+            
+            <li>
+                <h3>2. Why do I need WIFI for DCalling WIFI?</h3>
+                <div class="acc-section">
+                    <div class="acc-content">
+                        The call to the destination is routed through the internet. Therefore you need WIFI enabled and connected. We do NOT recommend using DCalling WIFI via your mobile data network.
+                        
+                        
+                    </div>
+                </div>
+            </li>
+            
+            
+            <li>
+                <h3>3. How much does DCalling WIFI charge for the call?</h3>
+                <div class="acc-section">
+                    <div class="acc-content">
+                        A call home to most landlines like Europe, USA etc. costs 1,9 Cent/Min. For all termination charges to international and mobile destinations please check our pricelist in the App or on our website.<br><br>
+                    
+                        <p>There are no additional connection charges, no subscriptions or other hidden costs. You just pay as you go by the minute.</p>
+                        
+                    </div>
+                </div>
+            </li>
+            
+            <li>
+                <h3>4. How do I use DCalling WIFI?</h3>
+                <div class="acc-section">
+                    <div class="acc-content">
+                        Register your mobile number when you start DCalling WIFI for the first time. Now you can dial from the DCalling WIFI app and also access your telephone book from there.
+                        
+                    </div>
+                </div>
+            </li>
+            
+            <li>
+                <h3>5. Are there any costs for the called person?</h3>
+                <div class="acc-section">
+                    <div class="acc-content">
+                        No. DCalling WIFI does not cause any costs for the called person. In US and Canada costs for the called party can occur according to their rate plan.
+                    </div>
+                </div>
+            </li>
+            
+            
+            <li>
+                <h3>6. Where can I use DCalling WIFI? </h3>
+                <div class="acc-section">
+                    <div class="acc-content">
+                        
+                        	You can currently use DCalling WIFI from everywhere in the world where you have a WIFI network.
+                        
+                    </div>
+                </div>
+            </li>
+            <li>
+                <h3> 8. Do I need an account to use DCalling WIFI? </h3>
+                <div class="acc-section">
+                    <div class="acc-content">
+                        By registering your mobile number DCalling WIFI automatically creates an account for you. This is required to bill your calls from this prepaid account. In case you already are DCalling customer: If the entered mobile number is already associated with your DCalling account, DCalling WIFI will automatically use your existing DCalling account to invoice your calls. If you do not have a DCalling account, do not worry.
+                        
+                    </div>
+                </div>
+            </li>
+            
+            <li>
+                <h3> 9. Why and how do I verify my mobile number? </h3>
+                <div class="acc-section">
+                    <div class="acc-content">
+                        The first time you launch the DCalling WIFI app you will be asked for your mobile number. Enter your mobile number including the international prefix (without leading 0) and wait a few seconds. In a few cases you will not receive a SMS with a verification code. If this procedure does not work, please call our support staff.
+                        
+                    </div>
+                </div>
+            </li>
+            
+            
+            <li>
+                <h3>  10. How can I tell that a call is being routed via DCalling WIFI? </h3>
+                <div class="acc-section">
+                    <div class="acc-content">
+                        When you dial your call from the DCalling WIFI App you will hear a short voice prompt announcing the price of the call before every call.
+                        
+                    </div>
+                </div>
+            </li>
+            
+            
+            <li>
+                <h3> 11. How can I credit my account ? </h3>
+                <div class="acc-section">
+                    <div class="acc-content">
+                        You can credit your account on our website using credit card, bank transfer, PayPal and Direct eBanking. Using your credit card you can set up an automatic refill. Once your DCalling account drops below a certain credit limit the automatic refill can used to credit your account automatically. Except for bank transfer the minimum recharge amount is 20 EUR since we have to pay a significant amount of payment fees.
+                        
+                    </div>
+                </div>
+            </li>
+            
+            <li>
+                <h3> 12. What do I have to do if I have a new phone / mobile number / SIM card? </h3>
+                <div class="acc-section">
+                    <div class="acc-content">
+                        New phone: Reinstall the app and verify your number (again). Please note: a new number 	will give you a new DCalling WIFI account. New SIM card: App identifies your new number and replaces the old one after verification.
+                        
+                    </div>
+                </div>
+            </li>
+            
+            <li>
+                <h3> 13. How can I credit my account using Facebook? </h3>
+                <div class="acc-section">
+                    <div class="acc-content">
+                        We will give you a free credit of 1 EUR for a recommendation on Facebook. Just click on the Facebook button in the recharge menue.
+                        
+                    </div>
+                </div>
+            </li>
+            
+            <li>
+                <h3> 14. Do I need a mobile data connection to make a call via DCalling WIFI? </h3>
+                <div class="acc-section">
+                    <div class="acc-content">
+                        We recommend using DCalling WIFI with WIFI only. A mobile data connection is not required and not recommended. 
+                        <p>The calls are placed via internet and are using around 750 Kb per minute..</p>
+                        <p>The main screen displaying the credit as well as the recharge pages will incur small data volumes. </p>
+                        <p>Please note: A slow internet connection can deteriorate the call quality severely.</p>
+                    </div>
+                </div>
+            </li>
+            
+            <li>
+                <h3> 15. Houston, I have a problem! - Contact & support  </h3>
+                    <div class="acc-section">
+                    <div class="acc-content">
+                    If you have any questions please contact our support team. Tel: +49 (0) 221 17739610 (weekdays, 10 am to 6 pm) E-mail: support@dcalling.de
+                    
+                    </div>
+                    </div>
+                    </li>
+                    </ul>
+                    <script type="text/javascript" language="javascript">
+                    var accordion=new TINY.accordion.slider("accordion");
+                    function init() {
+                    accordion.init("acc","h3",1,-1,'selected');
+                    }
+                    window.onload = function() {
+                    setTimeout("init()", 500 );
+                    }
+                    </script>
+    </body>
+</html>
