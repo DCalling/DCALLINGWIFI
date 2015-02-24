@@ -73,6 +73,16 @@ BELLESIP_EXPORT int belle_sip_refresher_get_retry_after(const belle_sip_refreshe
 BELLESIP_EXPORT void belle_sip_refresher_set_retry_after(belle_sip_refresher_t* refresher, int delay_ms);
 
 /**
+ * returns  realm of the outbound proxy used for authentication, if any
+ */
+BELLESIP_EXPORT const char* belle_sip_refresher_get_realm(const belle_sip_refresher_t* refresher);
+
+/**
+ * Realm of the outbound proxy used for authentication, if any
+ */
+BELLESIP_EXPORT void belle_sip_refresher_set_realm(belle_sip_refresher_t* refresher, const char* realm);
+
+/**
  * get current client transaction
  * @param refresher object
  * @return transaction
@@ -90,6 +100,11 @@ BELLESIP_EXPORT const belle_sip_list_t* belle_sip_refresher_get_auth_events(cons
  * Enable manual mode: only belle_sip_refresher_refresh() called by application will cause requests to be resubmitted.
 **/
 BELLESIP_EXPORT void belle_sip_refresher_enable_manual_mode(belle_sip_refresher_t *refresher, int enabled);
+
+/**
+ * Retrieve last know public ip:port contact used.
+**/
+BELLESIP_EXPORT char* belle_sip_refresher_get_public_uri(belle_sip_refresher_t* refresher);
 
 BELLE_SIP_END_DECLS
 

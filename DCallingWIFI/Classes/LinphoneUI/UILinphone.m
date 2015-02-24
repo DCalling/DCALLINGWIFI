@@ -1,6 +1,6 @@
 /* UILinphone.m
  *
- //  Copyright (C) 2014 DALASON GmbH.
+ //  Copyright (C) 2015 DALASON GmbH.
  //  This file is part of a DALASON Project. (http://www.dalason.de)
  //  This program is free software; you can redistribute it and/or
  //  modify it under the terms of the GNU General Public License

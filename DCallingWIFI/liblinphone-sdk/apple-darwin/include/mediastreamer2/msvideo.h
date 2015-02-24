@@ -126,11 +126,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #define MS_VIDEO_SIZE_UXGA_H 1200
 
 
-/* those structs are part of the ABI: don't change their size otherwise binary plugins will be broken*/
 
-typedef struct MSVideoSize{
-	int width,height;
-} MSVideoSize;
 
 typedef struct MSRect{
 	int x,y,w,h;
@@ -145,6 +141,7 @@ struct _MSVideoConfiguration {
 	int bitrate_limit;	/**< The maximum bitrate to use when this video configuration is used. */
 	MSVideoSize vsize;	/**< The video size that is used when using this video configuration. */
 	float fps;	/**< The FPS that is used when using this video configuration. */
+	int mincpu;	/**< The minimum cpu count necessary when this configuration is used */
 	void *extra;	/**< A pointer to some extra parameters that may be used by the encoder when using this video configuration. */
 };
 
@@ -234,6 +231,8 @@ typedef struct _MSPicture{
 
 typedef struct _MSPicture YuvBuf; /*for backward compatibility*/
 
+typedef msgb_allocator_t MSYuvBufAllocator;
+
 #ifdef __cplusplus
 extern "C"{
 #endif
@@ -260,10 +259,14 @@ MS2_PUBLIC void rgb24_revert(uint8_t *buf, int w, int h, int linesize);
 MS2_PUBLIC void rgb24_copy_revert(uint8_t *dstbuf, int dstlsz,
 				const uint8_t *srcbuf, int srclsz, MSVideoSize roi);
 
+MS2_PUBLIC MSYuvBufAllocator *ms_yuv_buf_allocator_new(void);
+MS2_PUBLIC mblk_t *ms_yuv_buf_allocator_get(MSYuvBufAllocator *obj, MSPicture *buf, int w, int h);
+MS2_PUBLIC void ms_yuv_buf_allocator_free(MSYuvBufAllocator *obj);
+
 MS2_PUBLIC void ms_rgb_to_yuv(const uint8_t rgb[3], uint8_t yuv[3]);
 
 
-#ifdef __arm__
+#if defined(__arm__) || defined(__arm64__)
 MS2_PUBLIC void rotate_plane_neon_clockwise(int wDest, int hDest, int full_width, uint8_t* src, uint8_t* dst);
 MS2_PUBLIC void rotate_plane_neon_anticlockwise(int wDest, int hDest, int full_width, uint8_t* src, uint8_t* dst);
 MS2_PUBLIC void deinterlace_and_rotate_180_neon(uint8_t* ysrc, uint8_t* cbcrsrc, uint8_t* ydst, uint8_t* udst, uint8_t* vdst, int w, int h, int y_byte_per_row,int cbcr_byte_per_row);
@@ -272,41 +275,46 @@ void deinterlace_down_scale_neon(uint8_t* ysrc, uint8_t* cbcrsrc, uint8_t* ydst,
 #endif
 mblk_t *copy_ycbcrbiplanar_to_true_yuv_with_rotation_and_down_scale_by_2(uint8_t* y, uint8_t * cbcr, int rotation, int w, int h, int y_byte_per_row,int cbcr_byte_per_row, bool_t uFirstvSecond, bool_t down_scale);
 
-static inline bool_t ms_video_size_greater_than(MSVideoSize vs1, MSVideoSize vs2){
+static MS2_INLINE MSVideoSize ms_video_size_make(int width, int height){
+	MSVideoSize vsize={width,height};
+	return vsize;
+}
+
+static MS2_INLINE bool_t ms_video_size_greater_than(MSVideoSize vs1, MSVideoSize vs2){
 	return (vs1.width>=vs2.width) && (vs1.height>=vs2.height);
 }
 
-static inline bool_t ms_video_size_area_greater_than(MSVideoSize vs1, MSVideoSize vs2){
+static MS2_INLINE bool_t ms_video_size_area_greater_than(MSVideoSize vs1, MSVideoSize vs2){
 	return (vs1.width*vs1.height >= vs2.width*vs2.height);
 }
 
-static inline MSVideoSize ms_video_size_max(MSVideoSize vs1, MSVideoSize vs2){
+static MS2_INLINE MSVideoSize ms_video_size_max(MSVideoSize vs1, MSVideoSize vs2){
 	return ms_video_size_greater_than(vs1,vs2) ? vs1 : vs2;
 }
 
-static inline MSVideoSize ms_video_size_min(MSVideoSize vs1, MSVideoSize vs2){
+static MS2_INLINE MSVideoSize ms_video_size_min(MSVideoSize vs1, MSVideoSize vs2){
 	return ms_video_size_greater_than(vs1,vs2) ? vs2 : vs1;
 }
 
-static inline MSVideoSize ms_video_size_area_max(MSVideoSize vs1, MSVideoSize vs2){
+static MS2_INLINE MSVideoSize ms_video_size_area_max(MSVideoSize vs1, MSVideoSize vs2){
 	return ms_video_size_area_greater_than(vs1,vs2) ? vs1 : vs2;
 }
 
-static inline MSVideoSize ms_video_size_area_min(MSVideoSize vs1, MSVideoSize vs2){
+static MS2_INLINE MSVideoSize ms_video_size_area_min(MSVideoSize vs1, MSVideoSize vs2){
 	return ms_video_size_area_greater_than(vs1,vs2) ? vs2 : vs1;
 }
 
-static inline bool_t ms_video_size_equal(MSVideoSize vs1, MSVideoSize vs2){
+static MS2_INLINE bool_t ms_video_size_equal(MSVideoSize vs1, MSVideoSize vs2){
 	return vs1.width==vs2.width && vs1.height==vs2.height;
 }
 
 MS2_PUBLIC MSVideoSize ms_video_size_get_just_lower_than(MSVideoSize vs);
 
-static inline MSVideoOrientation ms_video_size_get_orientation(MSVideoSize vs){
+static MS2_INLINE MSVideoOrientation ms_video_size_get_orientation(MSVideoSize vs){
 	return vs.width>=vs.height ? MS_VIDEO_LANDSCAPE : MS_VIDEO_PORTRAIT;
 }
 
-static inline MSVideoSize ms_video_size_change_orientation(MSVideoSize vs, MSVideoOrientation o){
+static MS2_INLINE MSVideoSize ms_video_size_change_orientation(MSVideoSize vs, MSVideoOrientation o){
 	MSVideoSize ret;
 	if (o!=ms_video_size_get_orientation(vs)){
 		ret.width=vs.height;
@@ -360,24 +368,32 @@ struct _MSAverageFPS {
 	const char* context;
 };
 typedef struct _MSAverageFPS MSAverageFPS;
-MS2_PUBLIC void ms_video_init_average_fps(MSAverageFPS* afps, const char* context);
+MS2_PUBLIC void ms_average_fps_init(MSAverageFPS* afps, const char* context);
+MS2_PUBLIC bool_t ms_average_fps_update(MSAverageFPS* afps, uint32_t current_time);
+MS2_PUBLIC float ms_average_fps_get(const MSAverageFPS* afps);
+
+/*deprecated: for compatibility with plugin*/
+MS2_PUBLIC void ms_video_init_average_fps(MSAverageFPS* afps, const char* ctx);
 MS2_PUBLIC bool_t ms_video_update_average_fps(MSAverageFPS* afps, uint32_t current_time);
+
 
 /**
  * Find the best video configuration from a list of configurations according to a given bitrate limit.
  * @param[in] vconf_list The list of video configurations to choose from.
  * @param[in] bitrate The maximum bitrate limit the chosen configuration is allowed to use.
+ * @param[in] cpucount the number of cpu that can be used for this encoding.
  * @return The best video configuration found in the given list.
  */
-MS2_PUBLIC MSVideoConfiguration ms_video_find_best_configuration_for_bitrate(const MSVideoConfiguration *vconf_list, int bitrate);
+MS2_PUBLIC MSVideoConfiguration ms_video_find_best_configuration_for_bitrate(const MSVideoConfiguration *vconf_list, int bitrate, int cpucount);
 
 /**
  * Find the best video configuration from a list of configuration according to a given video size.
  * @param[in] vconf_list The list of video configurations to choose from.
  * @param[in] vsize The maximum video size the chosen configuration is allowed to use.
+ * @param[in] cpucount the number of cpu that can be used for this encoding.
  * @return The best video configuration found in the given list.
  */
-MS2_PUBLIC MSVideoConfiguration ms_video_find_best_configuration_for_size(const MSVideoConfiguration *vconf_list, MSVideoSize vsize);
+MS2_PUBLIC MSVideoConfiguration ms_video_find_best_configuration_for_size(const MSVideoConfiguration *vconf_list, MSVideoSize vsize, int cpucount);
 
 #ifdef __cplusplus
 }

@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the Free Software Foundation, either version 2 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -135,6 +135,19 @@ BELLESIP_EXPORT void	belle_generic_uri_set_user_password(belle_generic_uri_t* ur
 BELLESIP_EXPORT char*	belle_generic_uri_to_string(belle_generic_uri_t* uri) ;
 
 BELLESIP_EXPORT belle_sip_error_code belle_generic_uri_marshal(const belle_generic_uri_t* uri, char* buff, size_t buff_size, size_t *offset);
+
+
+/**
+ * 	         gets opaque part of this uri if hierarchies part not detected.
+ *
+ */
+BELLESIP_EXPORT const char*	belle_generic_uri_get_opaque_part(const belle_generic_uri_t* uri) ;
+
+/**
+ * 	         sets opaque part of this uri. Means hierarchies part is ignored if present.
+ *
+ */
+BELLESIP_EXPORT void belle_generic_uri_set_opaque_part(belle_generic_uri_t* uri,const char * opaque_part) ;
 
 
 #define BELLE_GENERIC_URI(obj) BELLE_SIP_CAST(obj,belle_generic_uri_t)

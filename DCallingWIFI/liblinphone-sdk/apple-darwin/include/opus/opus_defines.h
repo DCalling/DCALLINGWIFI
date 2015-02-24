@@ -46,7 +46,7 @@ extern "C" {
 #define OPUS_OK                0
 /** One or more invalid/out of range arguments @hideinitializer*/
 #define OPUS_BAD_ARG          -1
-/** The mode struct passed is invalid @hideinitializer*/
+/** Not enough bytes allocated in the buffer @hideinitializer*/
 #define OPUS_BUFFER_TOO_SMALL -2
 /** An internal error was detected @hideinitializer*/
 #define OPUS_INTERNAL_ERROR   -3
@@ -64,14 +64,14 @@ extern "C" {
 /**Export control for opus functions */
 
 #ifndef OPUS_EXPORT
-# if defined(__GNUC__) && defined(OPUS_BUILD)
-#  define OPUS_EXPORT __attribute__ ((visibility ("default")))
-# elif defined(WIN32) && !defined(__MINGW32__)
+# if defined(WIN32)
 #  ifdef OPUS_BUILD
 #   define OPUS_EXPORT __declspec(dllexport)
 #  else
 #   define OPUS_EXPORT
 #  endif
+# elif defined(__GNUC__) && defined(OPUS_BUILD)
+#  define OPUS_EXPORT __attribute__ ((visibility ("default")))
 # else
 #  define OPUS_EXPORT
 # endif
@@ -96,6 +96,18 @@ extern "C" {
 # endif
 #else
 # define OPUS_RESTRICT restrict
+#endif
+
+#if (!defined(__STDC_VERSION__) || (__STDC_VERSION__ < 199901L) )
+# if OPUS_GNUC_PREREQ(2,7)
+#  define OPUS_INLINE __inline__
+# elif (defined(_MSC_VER))
+#  define OPUS_INLINE __inline
+# else
+#  define OPUS_INLINE
+# endif
+#else
+# define OPUS_INLINE inline
 #endif
 
 /**Warning attributes for opus functions
@@ -151,6 +163,8 @@ extern "C" {
 #define OPUS_GET_LAST_PACKET_DURATION_REQUEST 4039
 #define OPUS_SET_EXPERT_FRAME_DURATION_REQUEST 4040
 #define OPUS_GET_EXPERT_FRAME_DURATION_REQUEST 4041
+#define OPUS_SET_PREDICTION_DISABLED_REQUEST 4042
+#define OPUS_GET_PREDICTION_DISABLED_REQUEST 4043
 
 /* Don't use 4045, it's already taken by OPUS_GET_GAIN_REQUEST */
 
@@ -194,7 +208,6 @@ extern "C" {
 #define OPUS_FRAMESIZE_20_MS                 5004 /**< Use 20 ms frames */
 #define OPUS_FRAMESIZE_40_MS                 5005 /**< Use 40 ms frames */
 #define OPUS_FRAMESIZE_60_MS                 5006 /**< Use 60 ms frames */
-#define OPUS_FRAMESIZE_VARIABLE              5010 /**< Optimize the frame size dynamically */
 
 /**@}*/
 
@@ -441,14 +454,6 @@ extern "C" {
   * @hideinitializer */
 #define OPUS_GET_APPLICATION(x) OPUS_GET_APPLICATION_REQUEST, __opus_check_int_ptr(x)
 
-/** Gets the sampling rate the encoder or decoder was initialized with.
-  * This simply returns the <code>Fs</code> value passed to opus_encoder_init()
-  * or opus_decoder_init().
-  * @param[out] x <tt>opus_int32 *</tt>: Sampling rate of encoder or decoder.
-  * @hideinitializer
-  */
-#define OPUS_GET_SAMPLE_RATE(x) OPUS_GET_SAMPLE_RATE_REQUEST, __opus_check_int_ptr(x)
-
 /** Gets the total samples of delay added by the entire codec.
   * This can be queried by the encoder and then the provided number of samples can be
   * skipped on from the start of the decoder's output to provide time aligned input
@@ -532,14 +537,10 @@ extern "C" {
   * @hideinitializer */
 #define OPUS_GET_LSB_DEPTH(x) OPUS_GET_LSB_DEPTH_REQUEST, __opus_check_int_ptr(x)
 
-/** Gets the duration (in samples) of the last packet successfully decoded or concealed.
-  * @param[out] x <tt>opus_int32 *</tt>: Number of samples (at current sampling rate).
-  * @hideinitializer */
-#define OPUS_GET_LAST_PACKET_DURATION(x) OPUS_GET_LAST_PACKET_DURATION_REQUEST, __opus_check_int_ptr(x)
-
 /** Configures the encoder's use of variable duration frames.
-  * When enabled, the encoder is free to use a shorter frame size than the one
-  * requested in the opus_encode*() call. It is then the user's responsibility
+  * When variable duration is enabled, the encoder is free to use a shorter frame
+  * size than the one requested in the opus_encode*() call.
+  * It is then the user's responsibility
   * to verify how much audio was encoded by checking the ToC byte of the encoded
   * packet. The part of the audio that was not encoded needs to be resent to the
   * encoder for the next call. Do not use this option unless you <b>really</b>
@@ -547,8 +548,14 @@ extern "C" {
   * @see OPUS_GET_EXPERT_VARIABLE_DURATION
   * @param[in] x <tt>opus_int32</tt>: Allowed values:
   * <dl>
-  * <dt>0</dt><dd>Disable variable duration (default).</dd>
-  * <dt>1</dt><dd>Enable variable duration.</dd>
+  * <dt>OPUS_FRAMESIZE_ARG</dt><dd>Select frame size from the argument (default).</dd>
+  * <dt>OPUS_FRAMESIZE_2_5_MS</dt><dd>Use 2.5 ms frames.</dd>
+  * <dt>OPUS_FRAMESIZE_5_MS</dt><dd>Use 2.5 ms frames.</dd>
+  * <dt>OPUS_FRAMESIZE_10_MS</dt><dd>Use 10 ms frames.</dd>
+  * <dt>OPUS_FRAMESIZE_20_MS</dt><dd>Use 20 ms frames.</dd>
+  * <dt>OPUS_FRAMESIZE_40_MS</dt><dd>Use 40 ms frames.</dd>
+  * <dt>OPUS_FRAMESIZE_60_MS</dt><dd>Use 60 ms frames.</dd>
+  * <dt>OPUS_FRAMESIZE_VARIABLE</dt><dd>Optimize the frame size dynamically.</dd>
   * </dl>
   * @hideinitializer */
 #define OPUS_SET_EXPERT_FRAME_DURATION(x) OPUS_SET_EXPERT_FRAME_DURATION_REQUEST, __opus_check_int(x)
@@ -556,11 +563,25 @@ extern "C" {
   * @see OPUS_SET_EXPERT_VARIABLE_DURATION
   * @param[out] x <tt>opus_int32 *</tt>: Returns one of the following values:
   * <dl>
-  * <dt>0</dt><dd>variable duration disabled (default).</dd>
-  * <dt>1</dt><dd>variable duration enabled.</dd>
+  * <dt>OPUS_FRAMESIZE_ARG</dt><dd>Select frame size from the argument (default).</dd>
+  * <dt>OPUS_FRAMESIZE_2_5_MS</dt><dd>Use 2.5 ms frames.</dd>
+  * <dt>OPUS_FRAMESIZE_5_MS</dt><dd>Use 2.5 ms frames.</dd>
+  * <dt>OPUS_FRAMESIZE_10_MS</dt><dd>Use 10 ms frames.</dd>
+  * <dt>OPUS_FRAMESIZE_20_MS</dt><dd>Use 20 ms frames.</dd>
+  * <dt>OPUS_FRAMESIZE_40_MS</dt><dd>Use 40 ms frames.</dd>
+  * <dt>OPUS_FRAMESIZE_60_MS</dt><dd>Use 60 ms frames.</dd>
+  * <dt>OPUS_FRAMESIZE_VARIABLE</dt><dd>Optimize the frame size dynamically.</dd>
   * </dl>
   * @hideinitializer */
 #define OPUS_GET_EXPERT_FRAME_DURATION(x) OPUS_GET_EXPERT_FRAME_DURATION_REQUEST, __opus_check_int_ptr(x)
+
+/** If set to 1, disables almost all use of prediction, making frames almost
+    completely independent. This reduces quality. (default : 0)
+  * @hideinitializer */
+#define OPUS_SET_PREDICTION_DISABLED(x) OPUS_SET_PREDICTION_DISABLED_REQUEST, __opus_check_int(x)
+/** Gets the encoder's configured prediction status.
+  * @hideinitializer */
+#define OPUS_GET_PREDICTION_DISABLED(x) OPUS_GET_PREDICTION_DISABLED_REQUEST, __opus_check_int_ptr(x)
 
 /**@}*/
 
@@ -615,18 +636,6 @@ extern "C" {
   * @hideinitializer */
 #define OPUS_GET_FINAL_RANGE(x) OPUS_GET_FINAL_RANGE_REQUEST, __opus_check_uint_ptr(x)
 
-/** Gets the pitch of the last decoded frame, if available.
-  * This can be used for any post-processing algorithm requiring the use of pitch,
-  * e.g. time stretching/shortening. If the last frame was not voiced, or if the
-  * pitch was not coded in the frame, then zero is returned.
-  *
-  * This CTL is only implemented for decoder instances.
-  *
-  * @param[out] x <tt>opus_int32 *</tt>: pitch period at 48 kHz (or 0 if not available)
-  *
-  * @hideinitializer */
-#define OPUS_GET_PITCH(x) OPUS_GET_PITCH_REQUEST, __opus_check_int_ptr(x)
-
 /** Gets the encoder's configured bandpass or the decoder's last bandpass.
   * @see OPUS_SET_BANDWIDTH
   * @param[out] x <tt>opus_int32 *</tt>: Returns one of the following values:
@@ -640,6 +649,14 @@ extern "C" {
   * </dl>
   * @hideinitializer */
 #define OPUS_GET_BANDWIDTH(x) OPUS_GET_BANDWIDTH_REQUEST, __opus_check_int_ptr(x)
+
+/** Gets the sampling rate the encoder or decoder was initialized with.
+  * This simply returns the <code>Fs</code> value passed to opus_encoder_init()
+  * or opus_decoder_init().
+  * @param[out] x <tt>opus_int32 *</tt>: Sampling rate of encoder or decoder.
+  * @hideinitializer
+  */
+#define OPUS_GET_SAMPLE_RATE(x) OPUS_GET_SAMPLE_RATE_REQUEST, __opus_check_int_ptr(x)
 
 /**@}*/
 
@@ -664,6 +681,23 @@ extern "C" {
   * @param[out] x <tt>opus_int32 *</tt>: Amount to scale PCM signal by in Q8 dB units.
   * @hideinitializer */
 #define OPUS_GET_GAIN(x) OPUS_GET_GAIN_REQUEST, __opus_check_int_ptr(x)
+
+/** Gets the duration (in samples) of the last packet successfully decoded or concealed.
+  * @param[out] x <tt>opus_int32 *</tt>: Number of samples (at current sampling rate).
+  * @hideinitializer */
+#define OPUS_GET_LAST_PACKET_DURATION(x) OPUS_GET_LAST_PACKET_DURATION_REQUEST, __opus_check_int_ptr(x)
+
+/** Gets the pitch of the last decoded frame, if available.
+  * This can be used for any post-processing algorithm requiring the use of pitch,
+  * e.g. time stretching/shortening. If the last frame was not voiced, or if the
+  * pitch was not coded in the frame, then zero is returned.
+  *
+  * This CTL is only implemented for decoder instances.
+  *
+  * @param[out] x <tt>opus_int32 *</tt>: pitch period at 48 kHz (or 0 if not available)
+  *
+  * @hideinitializer */
+#define OPUS_GET_PITCH(x) OPUS_GET_PITCH_REQUEST, __opus_check_int_ptr(x)
 
 /**@}*/
 
