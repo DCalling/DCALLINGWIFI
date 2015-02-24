@@ -20,9 +20,10 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #ifndef msfilter_h
 #define msfilter_h
 
-#include "mscommon.h"
-#include "msqueue.h"
-#include "allfilters.h"
+#include "mediastreamer2/mscommon.h"
+#include "mediastreamer2/msqueue.h"
+#include "mediastreamer2/allfilters.h"
+#include "mediastreamer2/formats.h"
 
 /**
  * @file msfilter.h
@@ -177,7 +178,8 @@ struct _MSFilter{
 	ms_mutex_t lock;
 	MSQueue **inputs; /**<Table of input queues.*/
 	MSQueue **outputs;/**<Table of output queues */
-	void *padding[2]; /**Unused - to be reused later when new protected fields have to added*/
+	struct _MSFactory *factory;/**<the factory that created this filter*/
+	void *padding; /**Unused - to be reused later when new protected fields have to added*/
 	void *data; /**< Pointer used by the filter for internal state and computations.*/
 	struct _MSTicker *ticker; /**<Pointer to the ticker object. It is not NULL when being called process()*/
 	/*private attributes, they can be moved and changed at any time*/
@@ -299,7 +301,7 @@ MS2_PUBLIC MSFilterDesc *ms_filter_lookup_by_name(const char *filter_name);
  * Returns a list of filter descriptions implementing a given interface.
  * The list itself must be freed by the caller of this function, but not the MSFilterDesc pointed by the list elements.
  * @param id a filter interface id
- * @returns a newly allocated MSList of #MSFilterDesc.
+ * @return a newly allocated MSList of #MSFilterDesc.
 **/
 MSList *ms_filter_lookup_by_interface(MSFilterInterfaceId id);
 
@@ -441,7 +443,16 @@ MS2_PUBLIC bool_t ms_filter_has_method(MSFilter *f, unsigned int id);
  * 
  * Returns TRUE if interface is implemented, FALSE, otherwise.
 **/
-bool_t ms_filter_implements_interface(MSFilter *f, MSFilterInterfaceId id);
+MS2_PUBLIC bool_t ms_filter_implements_interface(MSFilter *f, MSFilterInterfaceId id);
+
+/**
+ * Returns whether a filter implements a given interface, based on the filter's descriptor.
+ * @param f a MSFilter object
+ * @param id an interface id.
+ * 
+ * Returns TRUE if interface is implemented, FALSE, otherwise.
+**/
+MS2_PUBLIC bool_t ms_filter_desc_implements_interface(MSFilterDesc *desc, MSFilterInterfaceId id);
 
 /**
  * Set a callback on filter's to be informed of private filter's event.
@@ -455,7 +466,7 @@ bool_t ms_filter_implements_interface(MSFilter *f, MSFilterInterfaceId id);
  * @deprecated use ms_filter_add_notify_callback()
  *
  */
-//MS2_PUBLIC void ms_filter_set_notify_callback(MSFilter *f, MSFilterNotifyFunc fn, void *userdata);
+
 
 /**
  * Set a callback on filter's to be informed of private filter's event.
@@ -594,6 +605,8 @@ MS2_PUBLIC const MSList * ms_filter_get_statistics(void);
 MS2_PUBLIC void ms_filter_log_statistics(void);
 
 
+
+
 /* I define the id taking the lower bits of the address of the MSFilterDesc object,
 the method index (_cnt_) and the argument size */
 /* I hope using this to avoid type mismatch (calling a method on the wrong filter)*/
@@ -628,6 +641,13 @@ the method index (_cnt_) and the argument size */
 #define MS_FILTER_EVENT_NO_ARG(_id_,_count_)\
 	MS_FILTER_METHOD_ID(_id_,_count_,0)
 
+	
+#define MS_FILTER_BASE_EVENT(_count_,_argtype_) \
+	MS_FILTER_EVENT(MS_FILTER_BASE_ID,_count_,_argtype_)
+
+#define MS_FILTER_BASE_EVENT_NO_ARG(_count_) \
+	MS_FILTER_EVENT_NO_ARG(MS_FILTER_BASE_ID,_count_)
+	
 /**
  *  some MSFilter base generic methods:
  **/
@@ -661,8 +681,36 @@ the method index (_cnt_) and the argument size */
 /**Filters can return their latency in milliseconds (if known) using this method:*/
 #define MS_FILTER_GET_LATENCY	MS_FILTER_BASE_METHOD(11,int)
 
+typedef struct _MSPinFormat{
+	int pin;
+	const MSFmtDescriptor *fmt;
+}MSPinFormat;
 
-/* more specific methods: to be moved into implementation specific header files*/
+/**
+ * Obtain the format of a filter on a given input
+ */
+#define MS_FILTER_GET_INPUT_FMT MS_FILTER_BASE_METHOD(30,MSPinFormat)
+/**
+ * Set the format of a filter on a given input
+ */
+#define MS_FILTER_SET_INPUT_FMT MS_FILTER_BASE_METHOD(31,MSPinFormat)
+/**
+ * Obtain the format of a filter on a given output
+ */
+#define MS_FILTER_GET_OUTPUT_FMT MS_FILTER_BASE_METHOD(32,MSPinFormat)
+/**
+ * Set the format of a filter on a given output
+ */
+#define MS_FILTER_SET_OUTPUT_FMT MS_FILTER_BASE_METHOD(33,MSPinFormat)
+
+
+/**
+ * MSFilter generic events
+**/
+#define MS_FILTER_OUTPUT_FMT_CHANGED MS_FILTER_BASE_EVENT_NO_ARG(0) /**<triggered whenever a filter decides to change its output format for one or more more output pins*/
+
+
+/* DEPRECATED  specific methods: to be moved into implementation specific header files - DO NOT USE IN NEW CODE*/
 #define MS_FILTER_SET_FILTERLENGTH 	MS_FILTER_BASE_METHOD(12,int)
 #define MS_FILTER_SET_OUTPUT_SAMPLE_RATE MS_FILTER_BASE_METHOD(13,int)
 #define MS_FILTER_ENABLE_DIRECTMODE	MS_FILTER_BASE_METHOD(14,int)
@@ -682,8 +730,6 @@ the method index (_cnt_) and the argument size */
 #define MS_FILTER_SET_RTP_PAYLOAD_PICKER MS_FILTER_BASE_METHOD(27,void*)
 #define MS_FILTER_SET_OUTPUT_NCHANNELS	MS_FILTER_BASE_METHOD(28,int)
 
-#define MS_CONF_SPEEX_PREPROCESS_MIC	MS_FILTER_EVENT(MS_CONF_ID, 1, void*)
-#define MS_CONF_CHANNEL_VOLUME	MS_FILTER_EVENT(MS_CONF_ID, 3, void*)
 
 /** @} */
 
@@ -717,8 +763,8 @@ MS2_PUBLIC void ms_filter_postpone_task(MSFilter *f, MSFilterFunc taskfunc);
 }
 #endif
 
-#include "msinterfaces.h"
-
+#include "mediastreamer2/msinterfaces.h"
+#include "mediastreamer2/msfactory.h"
 /* used by awk script in Makefile.am to generate alldescs.c */
 #define MS_FILTER_DESC_EXPORT(desc)
 

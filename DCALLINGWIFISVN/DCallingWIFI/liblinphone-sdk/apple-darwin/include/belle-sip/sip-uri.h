@@ -16,24 +16,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/*
-	belle-sip - SIP (RFC3261) library.
-    Copyright (C) 2013  Belledonne Communications SARL, Grenoble, France
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
 #ifndef BELLE_SIP_URI_H_
 #define BELLE_SIP_URI_H_
 
@@ -215,7 +197,7 @@ BELLESIP_EXPORT void	belle_sip_uri_set_user_password(belle_sip_uri_t* uri,const 
  * 	          This method returns the URI as a string.
  *
  */
-BELLESIP_EXPORT char*	belle_sip_uri_to_string(belle_sip_uri_t* uri) ;
+BELLESIP_EXPORT char*	belle_sip_uri_to_string(const belle_sip_uri_t* uri) ;
 
 belle_sip_error_code belle_sip_uri_marshal(const belle_sip_uri_t* uri, char* buff, size_t buff_size, size_t *offset);
 
@@ -238,7 +220,17 @@ BELLESIP_EXPORT int belle_sip_uri_check_components_from_request_uri(const belle_
 BELLESIP_EXPORT int belle_sip_uri_check_components_from_context(const belle_sip_uri_t* uri,const char* method,const char* header_name);
 BELLE_SIP_END_DECLS
 
-
+#if defined(__cplusplus) && defined(BELLE_SIP_USE_STL)
+#include <ostream>
+inline   std::ostream&
+operator<<( std::ostream& __os, const belle_sip_uri_t* uri)
+{
+	char* uri_as_string = belle_sip_uri_to_string(uri);
+	__os << uri_as_string;
+	belle_sip_free(uri_as_string);
+	return __os;
+}
+#endif
 
 #endif  /*BELLE_SIP_URI_H_*/
 

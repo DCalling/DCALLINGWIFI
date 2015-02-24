@@ -62,17 +62,18 @@ typedef struct rtp_header
 
 typedef struct rtp_stats
 {
-	uint64_t packet_sent;
-	uint64_t sent;		/* bytes sent */
-	uint64_t recv; 		/* bytes of payload received and delivered in time to the application */
-	uint64_t hw_recv;		/* bytes of payload received */
-	uint64_t packet_recv;	/* number of packets received */
-	uint64_t outoftime;		/* number of packets that were received too late */
-	int64_t cum_packet_loss; /* cumulative number of packet lost */
-	uint64_t bad;			/* packets that did not appear to be RTP */
-	uint64_t discarded;		/* incoming packets discarded because the queue exceeds its max size */
-	uint64_t duplicated;	/* incoming packets duplicated */
-	uint64_t sent_rtcp_packets;	/* sent RTCP packets counter (only packets that embed a report block are considered) */
+	uint64_t packet_sent;		/*number of outgoing packets */
+	uint64_t packet_dup_sent;	/*number of outgoing duplicate packets */
+	uint64_t sent;				/* outgoing total bytes (excluding IP header) */
+	uint64_t packet_recv;		/* number of incoming packets */
+	uint64_t packet_dup_recv;	/* number of incoming duplicate packets */
+	uint64_t recv;				/* incoming bytes of payload and delivered in time to the application */
+	uint64_t hw_recv;			/* incoming bytes of payload */
+	uint64_t outoftime;			/* number of incoming packets that were received too late */
+	int64_t  cum_packet_loss;	/* cumulative number of incoming packet lost */
+	uint64_t bad;				/* incoming packets that did not appear to be RTP */
+	uint64_t discarded;			/* incoming packets discarded because the queue exceeds its max size */
+	uint64_t sent_rtcp_packets;	/* outgoing RTCP packets counter (only packets that embed a report block are considered) */
 } rtp_stats_t;
 
 typedef struct jitter_stats
@@ -81,7 +82,7 @@ typedef struct jitter_stats
 	uint32_t max_jitter;		/* biggest interarrival jitter (value in stream clock unit) */
 	uint64_t sum_jitter;		/* sum of all interarrival jitter (value in stream clock unit) */
 	uint64_t max_jitter_ts;		/* date (in ms since Epoch) of the biggest interarrival jitter */
-	float jitter_buffer_size_ms;	/* mean jitter buffer size in milliseconds.*/
+	float jitter_buffer_size_ms;/* mean jitter buffer size in milliseconds.*/
 } jitter_stats_t;
 
 #define RTP_TIMESTAMP_IS_NEWER_THAN(ts1,ts2) \
@@ -89,6 +90,9 @@ typedef struct jitter_stats
 
 #define RTP_TIMESTAMP_IS_STRICTLY_NEWER_THAN(ts1,ts2) \
 	( ((uint32_t)((uint32_t)(ts1) - (uint32_t)(ts2))< (uint32_t)(1<<31)) && (ts1)!=(ts2) )
+
+#define RTP_SEQ_IS_STRICTLY_GREATER_THAN(seq1,seq2)\
+	(((uint16_t)((uint16_t)(seq1) - (uint16_t)(seq2))< (uint16_t)(1<<15)) && (seq1!=seq2))
 
 #define TIME_IS_NEWER_THAN(t1,t2) RTP_TIMESTAMP_IS_NEWER_THAN(t1,t2)
 

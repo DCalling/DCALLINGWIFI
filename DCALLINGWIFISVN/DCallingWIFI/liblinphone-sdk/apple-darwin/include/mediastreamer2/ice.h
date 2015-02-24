@@ -375,6 +375,24 @@ MS2_PUBLIC bool_t ice_session_remote_credentials_changed(IceSession *session, co
 MS2_PUBLIC void ice_session_set_remote_credentials(IceSession *session, const char *ufrag, const char *pwd);
 
 /**
+ * get the remote ufrag of an ICE check list.
+ *
+ * @param cl A pointer to a check list
+ *
+ * This function is to be called once the remote credentials have been received via SDP.
+ */
+MS2_PUBLIC const char* ice_check_list_set_remote_ufrag(const IceCheckList *cl);
+
+/**
+ * get the remote pwd of an ICE check list.
+ *
+ * @param cl A pointer to a check list
+ *
+ * This function is to be called once the remote credentials have been received via SDP.
+ */
+MS2_PUBLIC const char* ice_check_list_set_remote_pwd(const IceCheckList *cl);
+
+/**
  * Define the maximum number of connectivity checks that will be performed by the agent.
  *
  * @param session A pointer to a session
@@ -500,7 +518,13 @@ MS2_PUBLIC IceCheckListState ice_check_list_state(const IceCheckList *cl);
  * @param state The new state of the check list
  */
 MS2_PUBLIC void ice_check_list_set_state(IceCheckList *cl, IceCheckListState state);
-
+/**
+ * Humanly readable IceCheckListState
+ *
+ * @param state The state of the check list
+ * @return a humanly readable IceCheckListState.
+ */
+MS2_PUBLIC const char* ice_check_list_state_to_string(const IceCheckListState state);
 /**
  * Assign an RTP session to an ICE check list.
  *

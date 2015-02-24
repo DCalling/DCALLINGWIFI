@@ -17,7 +17,7 @@
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-/** 
+/**
  * \file payloadtype.h
  * \brief Definition of payload types
  *
@@ -60,7 +60,7 @@ extern "C"{
 
 struct _PayloadTypeAvpfParams {
 	unsigned char features; /**< A bitmask of PAYLOAD_TYPE_AVPF_* macros. */
-	unsigned char trr_interval; /**< The interval in seconds between regular RTCP packets. */
+	uint16_t trr_interval; /**< The interval in milliseconds between regular RTCP packets. */
 };
 
 struct _PayloadType
@@ -148,10 +148,14 @@ ORTP_VAR_PUBLIC PayloadType payload_type_silk_nb;
 ORTP_VAR_PUBLIC PayloadType payload_type_silk_mb;
 ORTP_VAR_PUBLIC PayloadType payload_type_silk_wb;
 ORTP_VAR_PUBLIC PayloadType payload_type_silk_swb;
+ORTP_VAR_PUBLIC PayloadType payload_type_aaceld_16k;
 ORTP_VAR_PUBLIC PayloadType payload_type_aaceld_22k;
+ORTP_VAR_PUBLIC PayloadType payload_type_aaceld_32k;
 ORTP_VAR_PUBLIC PayloadType payload_type_aaceld_44k;
+ORTP_VAR_PUBLIC PayloadType payload_type_aaceld_48k;
 ORTP_VAR_PUBLIC PayloadType payload_type_opus;
 ORTP_VAR_PUBLIC PayloadType payload_type_isac;
+ORTP_VAR_PUBLIC PayloadType payload_type_gsm_efr;
 
 /* video */
 ORTP_VAR_PUBLIC PayloadType payload_type_mpv;

@@ -4,7 +4,7 @@
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
+    the Free Software Foundation, either version 2 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
@@ -128,9 +128,10 @@ BELLE_SIP_DECLARE_TYPES_BEGIN(belle_sip,1)
 	BELLE_SIP_TYPE_ID(belle_http_header_authorization_t),
 	BELLE_SIP_TYPE_ID(belle_sip_body_handler_t),
 	BELLE_SIP_TYPE_ID(belle_sip_memory_body_handler_t),
-	BELLE_SIP_TYPE_ID(belle_sip_file_body_handler_t),
 	BELLE_SIP_TYPE_ID(belle_sip_user_body_handler_t),
-	BELLE_SIP_TYPE_ID(belle_sip_multipart_body_handler_t)
+	BELLE_SIP_TYPE_ID(belle_sip_file_body_handler_t),
+	BELLE_SIP_TYPE_ID(belle_sip_multipart_body_handler_t),
+	BELLE_SIP_TYPE_ID(belle_sip_header_event_t)
 BELLE_SIP_DECLARE_TYPES_END
 
 
@@ -167,6 +168,7 @@ typedef struct belle_tls_verify_policy belle_tls_verify_policy_t;
 typedef struct belle_sip_body_handler belle_sip_body_handler_t;
 typedef struct belle_sip_memory_body_handler belle_sip_memory_body_handler_t;
 typedef struct belle_sip_user_body_handler belle_sip_user_body_handler_t;
+typedef struct belle_sip_file_body_handler belle_sip_file_body_handler_t;
 typedef struct belle_sip_multipart_body_handler belle_sip_multipart_body_handler_t;
 
 #endif
